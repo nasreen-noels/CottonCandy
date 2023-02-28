@@ -1,2 +1,2 @@
-# CotttonCandy
+# CottonCandy
 The sweetest robot 
