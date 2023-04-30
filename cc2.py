@@ -62,13 +62,14 @@ def command_check(current_command, total_commands):
 
 def process_commands(command_log):
     # s = connect()
-    prev = 0
     for index, logs in enumerate(command_log):
         # s.sendall(logs['action'].encode('utf-8'))
-        print(index, logs)
-        next = index + 1
+        ln = len(command_log)
+        next_item = 0
+        if index < (ln - 1):
+            next_item = command_log[index + 1]
         command_check(index, len(command_log))
-        time.sleep((next - logs['timestamp']) / 1000)
+        time.sleep((next_item - logs['timestamp']) / 1000)
         print(logs)
     # s.close()
 
