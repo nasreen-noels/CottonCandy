@@ -61,17 +61,19 @@ def command_check(current_command, total_commands):
 # s.sendall(data.encode('utf-8'))
 
 def process_commands(command_log):
-    # s = connect()
+    s = connect()
     for index, logs in enumerate(command_log):
-        # s.sendall(logs['action'].encode('utf-8'))
+        s.sendall(logs['action'].encode('utf-8'))
         ln = len(command_log)
         next_item = 0
         if index < (ln - 1):
             next_item = command_log[index + 1]
-        command_check(index, len(command_log))
-        time.sleep((next_item - logs['timestamp']) / 1000)
-        print(logs)
-    # s.close()
+            command_check(index, len(command_log))
+            time.sleep((next_item['timestamp'] - logs['timestamp']) / 1000)
+            print(next_item)
+        else:
+            time.sleep(0)
+    s.close()
 
 
 def main():
