@@ -2,6 +2,7 @@
 # Analyze output from robot line following algorithm.
 
 # 1. read commands from text file
+
 import socket
 import time
 
@@ -40,12 +41,18 @@ def reverse_commands(command_file):
             if x[1] == 'RIGHT':
                 logs['action'] = 'LEFT'
     command_log.reverse()
-    for logs in command_log:
-        vals = float(x[0])
-        logs['timestamp'] = float(vals) - float(logs['timestamp'])
+    # set first two items in list to 0
+
+    timestamps = []
+    for log in command_log:
+        timestamps.append(int(log['timestamp']))
+    for index, log in enumerate(command_log):
+        if index == 0 or index == 1:
+            log['timestamp'] = 0
+        else:
+            log['timestamp'] = (timestamps[index - 2] - timestamps[index - 1]) + command_log[index - 1]['timestamp']
+    print(command_log)
     return command_log
-
-
 # for index, item in enumerate
 # elif
 # int
@@ -61,6 +68,7 @@ def command_check(current_command, total_commands):
 # s.sendall(data.encode('utf-8'))
 
 def process_commands(command_log):
+    print(command_log)
     s = connect()
     for index, logs in enumerate(command_log):
         s.sendall(logs['action'].encode('utf-8'))
@@ -74,10 +82,14 @@ def process_commands(command_log):
         else:
             time.sleep(0)
     s.close()
-
+def process_previous_commands(command_log):
+    prev = 0
+    for logs in command_log:
+        ((time.sleep(logs['timestamp'] - prev) / 1000))
+        prev = logs['timestamp']
 
 def main():
-    reversed_commands = reverse_commands('robotcommands.txt')
+    reversed_commands = reverse_commands('commands_new.txt')
     process_commands(reversed_commands)
 
 
